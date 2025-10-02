@@ -1,0 +1,133 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Modificação de Texto e Conteúdo</title>
+    <style>
+        /* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Fundo da página */
+body {
+  background: #1a1a1a; /* fundo escuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Container central */
+#container {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* espaço entre os elementos */
+  align-items: center;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Imagem */
+#image {
+  width: 100%;
+  max-width: 250px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Parágrafo */
+#paragraph {
+  font-size: 1rem;
+  color: #333;
+  margin-top: 0.5rem;
+}
+
+/* Input */
+#inputText {
+  width: 100%;
+  padding: 0.6rem;
+  border: 2px solid #2575fc; /* azul */
+  border-radius: 6px;
+  font-size: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  outline: none;
+  transition: 0.3s;
+}
+
+#inputText:focus {
+  border-color: #6a11cb;
+  box-shadow: 0 0 6px rgba(106, 17, 203, 0.5);
+}
+
+/* Botões */
+button {
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #4da6ff; /* azul claro */
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #1eff44; /* azul mais forte */
+  transform: scale(1.03);
+}
+
+.link-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff; /* azul */
+  color: white;
+  text-decoration: none; /* remove underline do link */
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.link-button:hover {
+  background-color: #0056b3; /* azul mais escuro ao passar o mouse */
+  transform: scale(1.05); /* leve aumento */
+}
+
+.top-right {
+  position: absolute; /* posiciona no topo da página */
+  top: 20px;
+  right: 20px;
+}
+
+
+</style>
+
+</head>
+<body>
+   <div class="top-right">
+    <a href="dom2.html" class="link-button">Ir para outra página</a>
+  </div>
+    <div id="container">
+        <button id="changeAttributeButton">Alterar Imagem</button>
+        <button id="changeStyleButton">Alterar Estilo</button>
+        <img id="image" src="images/solo1.jpg" width="200px">
+        <p id="paragraph">Este é um parágrafo de exemplo que será modificado.</p>
+        <input type="text" id="inputText" placeholder="Digite o novo texto aqui">
+        <button id="changeTextButton">Alterar Texto</button>
+        <button id="addButton">Adicionar Parágrafo</button>
+        <button id="removeButton">Remover Parágrafo</button>
+    </div>
+    <script src="dom.js"></script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulação Cliente/Servidor</title>
+  <style>
+    /* ===========================
+       RESET E BASE
+    =========================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+      gap: 20px;
+      position: relative; /* necessário para posicionar botões top-left e top-right */
+    }
+
+    /* ===========================
+       BOTÕES DE NAVEGAÇÃO TOPO
+    =========================== */
+    .top-left, .top-right {
+      position: absolute;
+      top: 20px;
+    }
+
+    .top-left {
+      left: 20px;
+    }
+
+    .top-right {
+      right: 20px;
+    }
+
+    .nav-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .nav-button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    /* ===========================
+       ESTILO DOS CARDS
+    =========================== */
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .card h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    /* ===========================
+       FORMULÁRIO CLIENTE
+    =========================== */
+    .campo {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 12px;
+    }
+
+    label {
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input, textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    /* ===========================
+       CARD SERVIDOR (LISTA DE CLIENTES)
+    =========================== */
+    #listaClientes {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .cliente-item {
+      background: #f8f9fa;
+      border-left: 4px solid #007bff;
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    .cliente-item:nth-child(even) {
+      background-color: #e9ecef;
+    }
+
+    .cliente-item p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botão Voltar no topo esquerdo -->
+  <div class="top-left">
+    <a href="dom.html" class="nav-button">Voltar</a>
+  </div>
+
+  <!-- Opcional: Botão ir para outra página no topo direito -->
+  <!-- <div class="top-right">
+    <a href="outraPagina.html" class="nav-button">Ir para outra página</a>
+  </div> -->
+
+  <!-- ===========================
+       CARD CLIENTE
+  =========================== -->
+  <div class="card" id="cardCliente">
+    <h2>Formulário Cliente</h2>
+    <div class="campo">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" placeholder="Digite o nome">
+    </div>
+    <div class="campo">
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Digite o email">
+    </div>
+    <div class="campo">
+      <label for="telefone">Telefone:</label>
+      <input type="tel" id="telefone" placeholder="Digite o telefone">
+    </div>
+    <div class="campo">
+      <label for="comentario">Comentário:</label>
+      <textarea id="comentario" placeholder="Digite um comentário"></textarea>
+    </div>
+    <button id="enviar">Enviar</button>
+  </div>
+
+  <!-- ===========================
+       CARD SERVIDOR
+  =========================== -->
+  <div class="card" id="cardServidor">
+    <h2>Banco de Dados (Simulação)</h2>
+    <div id="listaClientes">
+      <!-- Clientes cadastrados aparecerão aqui -->
+    </div>
+  </div>
+
+  <!-- ===========================
+       JAVASCRIPT
+  =========================== -->
+  <script>
+    // Seleciona o botão de envio
+    const botaoEnviar = document.querySelector("#enviar");
+
+    // Área onde os clientes vão aparecer
+    const listaClientes = document.querySelector("#listaClientes");
+
+    // Evento de clique no botão "Enviar"
+    botaoEnviar.addEventListener("click", function () {
+
+      // Pega os valores do formulário
+      let nome = document.querySelector("#nome").value.trim();
+      let email = document.querySelector("#email").value.trim();
+      let telefone = document.querySelector("#telefone").value.trim();
+      let comentario = document.querySelector("#comentario").value.trim();
+
+      // ===========================
+      // VALIDAÇÃO BÁSICA
+      // ===========================
+      if (!nome || !email) {
+        alert("Por favor, preencha pelo menos Nome e Email!");
+        return;
+      }
+
+      // Cria um novo "registro" de cliente
+      let novoCliente = document.createElement("div");
+      novoCliente.classList.add("cliente-item");
+
+      // Adiciona o conteúdo com os dados do cliente
+      novoCliente.innerHTML = `
+        <p><strong>Nome:</strong> ${nome}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Telefone:</strong> ${telefone || "---"}</p>
+        <p><strong>Comentário:</strong> ${comentario || "---"}</p>
+      `;
+
+      // Adiciona o cliente ao "banco de dados"
+      listaClientes.appendChild(novoCliente);
+
+      // Limpa os campos do formulário
+      document.querySelector("#nome").value = "";
+      document.querySelector("#email").value = "";
+      document.querySelector("#telefone").value = "";
+      document.querySelector("#comentario").value = "";
+
+      // Foca novamente no campo nome
+      document.querySelector("#nome").focus();
+    });
+  </script>
+</body>
+</html>
+
